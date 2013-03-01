@@ -1,0 +1,5 @@
+Copyright
+---------
+This file and all files in this repository, unless specified otherwise,  
+are copyrighted by Martin P. Hellwig <martin.hellwig@gmail.com>, 
+all rights reserved. 

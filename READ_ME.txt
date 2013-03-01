@@ -94,15 +94,6 @@ with catdd.dummy, which also contains an Interface class but it is as
 the name suggest an empty one that does not do any of the above 
 validation and checking.
 
-Copyright
----------
-This file and all files in this repository, unless specified otherwise,  
-are copyrighted by Martin P. Hellwig <martin.hellwig@gmail.com>, 
-all rights reserved. Please contact me if you require an agreement.
-
-Most non-commercial projects will be able to have a redistributable
-license without charge. 
-
 
 
 ------------------------------------------------------------------------
