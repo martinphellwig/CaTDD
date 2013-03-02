@@ -44,8 +44,8 @@ How do I install it?
 In the above context, your project most likely already is packaged
 in a certain way and you probably already have included external 
 modules in your package to prevent different install version to break 
-your application. So just copy this package into the folder where the 
-other third party software components are and import from there.
+your application. So just copy the folder catdd into the folder where 
+the other third party software components are and import from there.
 Please feel very discouraged to put this package in site-packages.
 
 How do I use it?
