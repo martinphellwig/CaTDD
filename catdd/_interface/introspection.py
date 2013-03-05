@@ -10,9 +10,7 @@
 catdd._interface.introspection
 """
 from inspect import isfunction, getsource
-
-ERROR_INHERITANCE = "Interface not Inherited from Interface"
-ERROR_DEFINITION = "Interface Class %s based on Implement Class %s"
+import validation
 
 def get_signature(function):
     source = getsource(function)
@@ -31,14 +29,10 @@ def get_signature(function):
 
 def resolve_inheritance(ifd):
     mro = list(ifd['new_class'].__mro__[:-1]) # -1 is always object
-    test_interface = mro[-1] # This must be Interface class
-    if test_interface != ifd['Interface']:
-        raise(ValueError(ERROR_INHERITANCE))
-    else:
-        mro = mro[:-1]
-    
+    validation.parent_is_catdd_interface(ifd, mro)
+    mro = mro[:-1] # -1 is The catdd Interface class
     mro.reverse() # Oldest First
-    # For each item see if if it has a base from interface, 
+    # For each item see, if if it has a base from interface, 
     # if so it is an interface definition, otherwise it is an implement.
     definition = list() 
     for item in mro:
@@ -57,9 +51,7 @@ def resolve_inheritance(ifd):
     for row in definition:
         defined_type = row[0]
         if defined_type == 'interface':
-            if previous[0] == 'implement':
-                text = ERROR_DEFINITION % (row[1], previous[1])
-                raise(ValueError(text))
+            validation.parent_is_implement(ifd, row, previous)
             interfaces.append(row[1])
         else:
             implements.append(row[1])
@@ -86,7 +78,13 @@ def resolve_attributes(ifd):
                                                'implement':None}
                     dic[attribute_name][key] = attribute_item
                 else:
-                    if attribute_item != None:
+                    set_attribute = False
+                    if attribute_name not in dic:
+                        set_attribute = True
+                    elif attribute_item != None:
+                        set_attribute = True
+                    
+                    if set_attribute:
                         sub = {'attribute':attribute_item}
                         dic[attribute_name] = sub
     

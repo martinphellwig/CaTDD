@@ -12,7 +12,10 @@ Module containing the Interface base classes.
 from wrappers import create_new_object
 # The Interface Dictionary Template, that is copied and filled.
 # It is used throughout the resolving and validation process.
-IFD = {'new_class':None,  # The first argument that is of __new__
+IFD = {'validation_type':None, # How strict in comparing interface/implement
+                               # This is actually set internally and reserved
+                               # for future use.
+       'new_class':None,  # The first argument that is of __new__
        'new_args':None,   # The list arguments that is of __new__
        'new_kwargs':None, # The keyword arguments of __new__
        'new_object':None, # The class of return_instance
@@ -31,5 +34,6 @@ class Interface(object):
         ifd['new_kwargs'] = kwargs
         ifd['new_object'] = create_new_object(ifd) 
         ifd['return_instance'] = ifd['new_object'](*args, **kwargs)
+        ifd['validation_type'] = 'strict'
         return(ifd['return_instance'])
 

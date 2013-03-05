@@ -8,16 +8,15 @@
 #
 """
 This Module illustrates a simple and straight forward use of interface
-without argument checking. Please read the source from top to bottom as
-it is described in detail. An explanation of the paradigm is given 
-below.
+without argument checking.
 """
 
 from catdd import Interface
 
 # This is the interface definition, note the elaborate docstring.
 class StringOperationsI(Interface):
-    """This is the docstring as defined in the interface.
+    """
+    This is the docstring as defined in the interface.
     The implement will actually have this one too.
     """
     def reverse(self, text):
@@ -53,6 +52,10 @@ class StringOperations(StringOperationsI):
     def reverse(self, text):
         return(text[::-1])
 
+# As you can see, when overriding the reverse method from the interface
+# we can disperse of all the docstring as this will be still available by 
+# means of wrapping, keeping the boilerplate to an absolute minimum while still
+# have full use of the built-in documentation functionality.
 
 def main():
     string_operations = StringOperations()
@@ -62,10 +65,10 @@ def main():
     print(return_value)
     print('<')
     print('Docstring of StringOperations Implement >')
-    print(help(string_operations))
+    help(string_operations)
     print('<')
     print('Docstring of the reverse function of Implement >')
-    print(help(string_operations.reverse))
+    help(string_operations.reverse)
     print('<')
     
 if __name__ == '__main__':

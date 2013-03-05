@@ -11,6 +11,7 @@ This class contains wrappers for methods and classes
 """
 import introspection
 ATTRIBUTES = ['__closure__', '__code__', '__hash__', '__repr__', '__str__']
+import validation
 
 class MethodWrapper(object):
     """
@@ -32,6 +33,8 @@ class MethodWrapper(object):
         return(implement_return)
     
 def wrap_method(ifd, item):
+    # Wrap the method so we have more control over it's actual runtime
+    # execution, preserve as much as possible, i.e. func_* attributes.
     name = 'Wrapped method %s' % item['implement'].__name__
     type_dic = dict()
     for attribute in dir(item['implement']):
@@ -41,8 +44,13 @@ def wrap_method(ifd, item):
     for attribute in ATTRIBUTES:
         type_dic[attribute] = getattr(item['implement'], attribute)
     
-    signature = introspection.get_signature(item['implement'])
-    doc = """>>> %s\n%s""" % (signature, item['implement'].__doc__)
+    if hasattr(item['interface'], '__doc__'):
+        doc_string = item['interface'].__doc__
+    else:
+        doc_string = item['implement'].__doc__
+    
+    signature = introspection.get_signature(item['implement'])    
+    doc = """>>> %s ... \n%s""" % (signature, doc_string)
     type_dic['__doc__'] = doc
     type_dic['func_archetype'] =  item['implement']
         
@@ -54,11 +62,12 @@ def wrap_method(ifd, item):
 def create_new_object(ifd):
     introspection.attributes(ifd) # Sets ifd['user_attributes'] 
     attributes = ifd['user_attributes']
+    validation.interface_and_implement_are_equally_defined(ifd)
     
     type_dic = dict()
     for key in attributes:
-        # If it is a module attribute map it direct.
-        # Otherwise it is a function and wrap it.
+        # If it is a class attribute map it direct.
+        # Otherwise it is a method and wrap it.
         item = attributes[key]
         if 'attribute' in item:
             value = item['attribute']

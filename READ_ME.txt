@@ -24,11 +24,11 @@ This package is not aimed to add functionality to your project but to
 help with the communication between developers. 
 
 This means you should avoid it if any of the following is true:
-- You are small team shop (4 or less)
+- You are small team shop, communication is not an issue.
 - You make use of a framework, which does not requiring any modification
   (Something like Django for example)
-- There are well established and working communication and organisation
-  streams (i.e. Specifications, Documentation, howto's, rules)
+- There are well established and working process streams 
+  (i.e. Specifications, Documentation, howto's, rules)
 - You are unconvinced of the benefits of Test Driven Development.
 
 Which means that you might be interested if you are the opposite:
@@ -55,11 +55,12 @@ your third party software components folder 'tpsc' is added under that.
 
 You will put the following line in the module where you define your 
 interface:
->>> from xyx.tpc.catdd import Interface, validation
+>>> from xyz.tpc.catdd import Interface, validate
 >>>
 >>> class ExampleInterface(Interface):
 ...     def reverse(self, text):
-...         pass 
+...         validate.String(text)
+...         return(validate.String)
 >>>
 
 And to use the above interface (i.e. the implement) you do: 
@@ -70,29 +71,36 @@ And to use the above interface (i.e. the implement) you do:
 
 That's it?
 ----------
-Well, no, of course you should use docstrings in your Interface.
-And perhaps split interface definitions and implements in different
-modules.  When you instantiate Example and call reverse appropriately
-the expected thing happens.
+Well, no, of course you should use docstrings in your Interface, see the 
+readme1st.py in the examples folder, and perhaps split interface definitions 
+and implements into different files.  
+
+What actually happens?
+----------------------
+When you instantiate Example and call reverse method with a string, you will 
+get returned a reversed string.
 
 However, what actually happens is on instantiation the interface is
 compared with the implement, requiring all functions in interface
 to be present in the implement and the argument specification of the
 functions to be the same. Then all the functions in the implement are 
 wrapped, when you call a function the input parameters are first
-called with ExampleInterface to optionally validate them. 
+called with ExampleInterface where we have defined some validation, the return
+value of interface method is another validator. This validator is used with
+the return value of the actual implement method. Finally if no exceptions
+have been thrown, the return value of the implement method is returned.
 
 If anything is not correct you will get an extended stacktrace 
 explaining exactly what interface/implement went wrong and why it went
-wrong and, if appropriate, with what input value was.
+wrong and, if appropriate, what input value was.
 
 What about the overhead?
 ------------------------
 The overhead is considerably, this is the reason that when you create
-a deploy version of your code, you replace the module catdd.interface
-with catdd.dummy, which also contains an Interface class but it is as 
-the name suggest an empty one that does not do any of the above 
-validation and checking.
+a deploy version of your code, you replace the module catdd  with dummy, 
+which also contains an Interface class and validate namespace but it is as the 
+name suggest an empty one that does not do any of the above validation and 
+checking.
 
 
 
