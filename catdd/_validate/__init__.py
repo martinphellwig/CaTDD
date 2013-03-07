@@ -9,21 +9,30 @@
 """
 Like readme1st.py but with validation.
 """
-
 import inspect
-from catdd._exceptions import ValidationException
+from catdd._exceptions import ValidationError
 
-class String(object):
+class BaseValidation(object):
     def __init__(self, *args, **kwargs):
         self.validate(*args, **kwargs)
     
     def __call__(self, *args, **kwargs):
         self.validate(*args, **kwargs)
+        
+    def validate(self, *args, **kwargs):
+        pass
     
+    def error(self, args, kwargs):
+        frames = inspect.getouterframes(inspect.currentframe())
+        frame = frames[3]
+        raise(ValidationError(args[0], frame))
+
+class String(BaseValidation):
     def validate(self, *args, **kwargs):
         test = args[0]
         if not isinstance(test, (str, unicode)):
-            raise(ValidationException())
+            self.error(args, kwargs)
+            
         
 
 if __name__ == '__main__':

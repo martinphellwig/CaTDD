@@ -9,28 +9,17 @@
 """
 catdd._interface.introspection
 """
-from inspect import isfunction, getsource
-import validation
+from inspect import isfunction
+import catdd
+from catdd._exceptions.introspection import get_signature, get_codepoint
 
-def get_signature(function):
-    source = getsource(function)
-    tmp = list()
-    for line in source.split('\n'):
-        line = line.strip()
-        line = line.split('#', 1)[0]
-        tmp.append(line)
-        
-        test = line.replace(' ', '')
-        if test.endswith('):'):
-            break
-    
-    signature = ''.join(tmp)
-    return(signature)
+ERROR_DEFINITION = "Interface Class %s based on Implement Class %s"
+
 
 def resolve_inheritance(ifd):
-    mro = list(ifd['new_class'].__mro__[:-1]) # -1 is always object
-    validation.parent_is_catdd_interface(ifd, mro)
-    mro = mro[:-1] # -1 is The catdd Interface class
+    mro = list(ifd['new_class'].__mro__) 
+    mro = mro[:-1] # -1 is always object
+    mro = mro[:-1] # -1 is the catdd Interface class
     mro.reverse() # Oldest First
     # For each item see, if if it has a base from interface, 
     # if so it is an interface definition, otherwise it is an implement.
@@ -51,7 +40,10 @@ def resolve_inheritance(ifd):
     for row in definition:
         defined_type = row[0]
         if defined_type == 'interface':
-            validation.parent_is_implement(ifd, row, previous)
+            if previous[0] == 'implement':
+                raise(catdd.exceptions.InterfaceImplementInheritanceError(ifd, 
+                                                                          row,
+                                                                     previous))                
             interfaces.append(row[1])
         else:
             implements.append(row[1])

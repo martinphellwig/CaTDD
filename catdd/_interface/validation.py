@@ -10,20 +10,8 @@
 catdd._interface.validation
 """
 
-ERROR_INHERITANCE = "Interface not Inherited from Interface"
-ERROR_DEFINITION = "Interface Class %s based on Implement Class %s"
-
 import inspect
-
-def parent_is_catdd_interface(ifd, mro):
-    test = mro[-1] 
-    if test != ifd['Interface']:
-        raise(ValueError(ERROR_INHERITANCE))
-
-def parent_is_implement(ifd, previous, current):
-    if previous[0] == 'implement':
-        text = ERROR_DEFINITION % (current[1], previous[1])
-        raise(ValueError(text))
+import catdd
     
 def method_signature_is_equal(interface, implement):
     as_interface = inspect.getargspec(interface)
@@ -44,11 +32,36 @@ def interface_and_implement_are_equally_defined(ifd):
         implement = ifd['user_attributes'][key]['implement']
         
         if interface == None:
-            missing.append([key, None])
-        elif implement == None:
             missing.append([None, key])
+        elif implement == None:
+            missing.append([key, None])
         elif not method_signature_is_equal(interface, implement):
             unequal.append([interface, implement])
 
     if len(missing) > 0 or len(unequal) > 0:
-        raise(ValueError(str(missing)+'\n'+str(unequal)))
+        raise(catdd.exceptions.InterfaceImplementError(ifd, missing, unequal))
+    
+def method_execution(ifd, interface, implement, args, kwargs):
+    Error = catdd.exceptions.InterfaceImplementMethodError
+
+    try:
+        instance = ifd['return_instance']
+        interface_return = interface(instance, *args, **kwargs)
+    except catdd.exceptions.ValidationError as instance:
+            raise(Error(ifd, interface, implement, 
+                        args, kwargs, 
+                        instance.frame, instance.argument))    
+    
+    implement_return = implement(instance, *args, **kwargs)
+    
+    #TODO: If an exception occurs here it means the return value is not 
+    # according to specification
+    if interface_return != None:
+        try:
+            interface_return(implement_return)
+        except catdd.exceptions.ValidationError as instance:
+            raise(Error(ifd, interface, implement, 
+                        args, kwargs, instance.frame, instance.argument))    
+        
+    return(implement_return)
+    

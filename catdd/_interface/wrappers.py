@@ -10,8 +10,9 @@
 This class contains wrappers for methods and classes
 """
 import introspection
-ATTRIBUTES = ['__closure__', '__code__', '__hash__', '__repr__', '__str__']
 import validation
+
+ATTRIBUTES = ['__closure__', '__code__', '__hash__', '__repr__', '__str__']
 
 class MethodWrapper(object):
     """
@@ -24,13 +25,8 @@ class MethodWrapper(object):
         self.implement = implement
         
     def __call__(self, *args, **kwargs):
-        instance = self.ifd['return_instance']
-        interface_return = self.interface(instance, *args, **kwargs)
-        implement_return = self.implement(instance, *args, **kwargs)
-        if interface_return != None:
-            interface_return(implement_return)
-        
-        return(implement_return)
+        return(validation.method_execution(self.ifd, self.interface, 
+                                           self.implement, args, kwargs))
     
 def wrap_method(ifd, item):
     # Wrap the method so we have more control over it's actual runtime

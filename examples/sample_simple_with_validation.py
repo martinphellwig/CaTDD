@@ -12,18 +12,22 @@ Like readme1st.py but with validation.
 
 from catdd import Interface, validate
 
+
 class StringOperationsI(Interface):
     def reverse(self, text):
+        validate.String('')
         validate.String(text)
         return(validate.String)
 
+
 class StringOperations(StringOperationsI):
     def reverse(self, text):
-        return(text[::-1])
+        #return(text[::-1])
+        return(True)
 
 def main():
     string_operations = StringOperations()
-    print(string_operations.reverse(3))
+    print(string_operations.reverse('abc'))
 
 if __name__ == '__main__':
     main()
