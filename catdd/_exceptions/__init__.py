@@ -236,5 +236,8 @@ class ValidationError(ErrorCaTDD):
     def __init__(self, argument, frame, validation):
         self.argument = argument
         self.frame = frame
-        self.format = validation.__class__.__name__
+        if validation.format == None: 
+            self.format = validation.__class__.__name__
+        else:
+            self.format = validation.format
     
