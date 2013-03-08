@@ -61,15 +61,13 @@ def main():
     string_operations = StringOperations()
     input_string = 'abc'
     return_value = string_operations.reverse(input_string)
-    print('output of reverse function >')
+    print('Output of reverse function')
+    print('--------------------------')
     print(return_value)
-    print('<')
-    print('Docstring of StringOperations Implement >')
+    print('--------------------------')
+    print('Docstring of StringOperations Implement')
+    print('---------------------------------------')
     help(string_operations)
-    print('<')
-    print('Docstring of the reverse function of Implement >')
-    help(string_operations.reverse)
-    print('<')
     
 if __name__ == '__main__':
     main()

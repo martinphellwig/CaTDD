@@ -21,7 +21,7 @@ class StringOperationsI(Interface):
 
 class StringOperations(StringOperationsI):
     def reverse(self, text):
-        return(1)
+        return(text[::-1])
 
 def main():
     string_operations = StringOperations()
