@@ -23,7 +23,9 @@ Interface/Implement Error occurred
 _TRACE = """
 Interfaces:
 %s
-
+------------------------------------------------------------------------------
+%s
+------------------------------------------------------------------------------
 Implements:
 %s
 ------------------------------------------------------------------------------
@@ -64,6 +66,7 @@ Can not inherit from a non-interface '%s' class when specifying interface '%s'
 
 _INPUT_INVALID = """
 Invalid input argument for method '%s'
+-------------------
 Signature ....... : %s
 Arguments ....... : %s
 Keyword Arguments : %s
@@ -72,9 +75,30 @@ Parameter Name .. : %s
 Expected Format . : %s
 Actual Value .... : %s
 Value type ...... : %s
+-------------------
+Code Pointer Method for Interface & Implement:
+%s
 %s
 ------------------------------------------------------------------------------
 """.strip()
+
+_RETURN_INVALID = """
+Invalid return value for method '%s'
+-------------------
+Signature ....... : %s
+Arguments ....... : %s
+Keyword Arguments : %s
+------------------- 
+Expected Format . : %s
+Return Value .... : %s
+Return Type ..... : %s
+-------------------
+Code Pointer Method for Interface & Implement:
+%s
+%s
+------------------------------------------------------------------------------
+""".strip()
+
 
 def _get_missing_error_text(ifd, interface, implement):
     if interface == None:
@@ -115,8 +139,10 @@ class _ExceptHook(object):
             implements.append('- %s' % implement.__name__)
         implements = '\n'.join(implements)
         
-        codepoint = get_codepoint(self.ifd['user_implements'][0])
-        text = _TRACE % (interfaces, implements, codepoint, args[1])
+        cp_implement = get_codepoint(self.ifd['user_implements'][0])
+        cp_interface = get_codepoint(self.ifd['user_interfaces'][0])
+        text = _TRACE % (interfaces, cp_interface, 
+                         implements, cp_implement, args[1])
         text = _BASE % text
         self.write(text)
         
@@ -186,6 +212,7 @@ class MethodInputError(InterfaceImplementMethodError):
                                          error.format,
                                          str(error.argument),
                                          str(type(error.argument)),
+                                         get_codepoint(interface),
                                          get_codepoint(implement))
               
                     
@@ -193,6 +220,16 @@ class MethodReturnValueError(InterfaceImplementMethodError):
     def __init__(self, ifd, interface, implement, args, kwargs, error):
         InterfaceImplementMethodError.__init__(self, ifd, interface, implement, 
                                                args, kwargs, error)
+
+        self._string = _RETURN_INVALID % (implement.__name__,
+                                          get_signature(implement),
+                                          args,
+                                          kwargs,
+                                          error.format,
+                                          str(error.argument),
+                                          str(type(error.argument)),
+                                          get_codepoint(interface, end=True),
+                                          get_codepoint(implement, end=True))
 
 
 class ValidationError(ErrorCaTDD):

@@ -56,7 +56,7 @@ def method_execution(ifd, interface, implement, args, kwargs):
     if interface_return == None:
         return(implement_return)
 
-    #TODO: If an exception occurs here it means the return value is not 
+    #If an exception occurs here it means the return value is not 
     # according to specification
     try:
         interface_return(implement_return)

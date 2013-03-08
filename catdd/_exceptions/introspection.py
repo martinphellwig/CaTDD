@@ -13,12 +13,18 @@ from inspect import getsource, getfile, getsourcelines
 
 _FILE = 'File "%s", line %s, in %s'
 
-def get_codepoint(subject):
+def get_codepoint(subject, end=False):
     source = getsourcelines(subject)
-    file_line =  source[-1]
-    code_name = source[0][0]
+    file_line = source[-1]
+    
+    if end:
+        code_name = source[0][-1]
+        file_line += len(source[0]) - 1
+    else:
+        code_name = source[0][-1]
+    
     file_name = getfile(subject)
-    codepoint = _FILE % (file_name, file_line, code_name)
+    codepoint = _FILE % (file_name, file_line, code_name.strip())
     return(codepoint.strip())
 
 def get_signature(function):
