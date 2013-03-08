@@ -15,6 +15,7 @@ from catdd._exceptions import ValidationError
 class BaseValidation(object):
     def __init__(self, *args, **kwargs):
         self.validate(*args, **kwargs)
+        self.format = ''
     
     def __call__(self, *args, **kwargs):
         self.validate(*args, **kwargs)
@@ -25,7 +26,7 @@ class BaseValidation(object):
     def error(self, args, kwargs):
         frames = inspect.getouterframes(inspect.currentframe())
         frame = frames[3]
-        raise(ValidationError(args[0], frame))
+        raise(ValidationError(args[0], frame, self))
 
 class String(BaseValidation):
     def validate(self, *args, **kwargs):

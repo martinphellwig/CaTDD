@@ -42,26 +42,26 @@ def interface_and_implement_are_equally_defined(ifd):
         raise(catdd.exceptions.InterfaceImplementError(ifd, missing, unequal))
     
 def method_execution(ifd, interface, implement, args, kwargs):
-    Error = catdd.exceptions.InterfaceImplementMethodError
+    ErrorInput = catdd.exceptions.MethodInputError
+    ErrorOutput = catdd.exceptions.MethodReturnValueError
 
     try:
         instance = ifd['return_instance']
         interface_return = interface(instance, *args, **kwargs)
     except catdd.exceptions.ValidationError as instance:
-            raise(Error(ifd, interface, implement, 
-                        args, kwargs, 
-                        instance.frame, instance.argument))    
+        raise(ErrorInput(ifd, interface, implement, args, kwargs, instance))    
     
     implement_return = implement(instance, *args, **kwargs)
     
+    if interface_return == None:
+        return(implement_return)
+
     #TODO: If an exception occurs here it means the return value is not 
     # according to specification
-    if interface_return != None:
-        try:
-            interface_return(implement_return)
-        except catdd.exceptions.ValidationError as instance:
-            raise(Error(ifd, interface, implement, 
-                        args, kwargs, instance.frame, instance.argument))    
+    try:
+        interface_return(implement_return)
+    except catdd.exceptions.ValidationError as instance:
+        raise(ErrorOutput(ifd, interface, implement, args, kwargs, instance))    
         
     return(implement_return)
     

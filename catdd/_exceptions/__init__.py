@@ -12,7 +12,7 @@ Exception Classes
 import sys
 import traceback
 
-from introspection import get_codepoint, get_signature
+from introspection import get_codepoint, get_signature, get_parameter
 
 _BASE = """
 Interface/Implement Error occurred
@@ -60,6 +60,20 @@ _NOT_INHERITED = """
 Can not inherit from a non-interface '%s' class when specifying interface '%s'
 %s
 %s
+""".strip()
+
+_INPUT_INVALID = """
+Invalid input argument for method '%s'
+Signature ....... : %s
+Arguments ....... : %s
+Keyword Arguments : %s
+------------------- 
+Argument Name ... : %s
+Expected Format . : %s
+Actual Value .... : %s
+Value type ...... : %s
+%s
+------------------------------------------------------------------------------
 """.strip()
 
 def _get_missing_error_text(ifd, interface, implement):
@@ -155,12 +169,35 @@ class InterfaceImplementError(InterfaceError):
         self._string = '\n'.join(tmp)
 
 class InterfaceImplementMethodError(InterfaceError):
-    def __init__(self, ifd, interface, implement, args, kwargs, frame, argument):
-        print([interface, implement, args, kwargs, frame, argument])
+    def __init__(self, ifd, interface, implement, args, kwargs, error):
         InterfaceError.__init__(self, ifd)
+        
+        
+class MethodInputError(InterfaceImplementMethodError):
+    def __init__(self, ifd, interface, implement, args, kwargs, error):
+        InterfaceImplementMethodError.__init__(self, ifd, interface, implement, 
+                                               args, kwargs, error)
+        
+        self._string = _INPUT_INVALID % (implement.__name__,
+                                         get_signature(implement),
+                                         args,
+                                         kwargs,
+                                         get_parameter(error.frame),
+                                         error.format,
+                                         str(error.argument),
+                                         str(type(error.argument)),
+                                         get_codepoint(implement))
+              
                     
+class MethodReturnValueError(InterfaceImplementMethodError):
+    def __init__(self, ifd, interface, implement, args, kwargs, error):
+        InterfaceImplementMethodError.__init__(self, ifd, interface, implement, 
+                                               args, kwargs, error)
+
+
 class ValidationError(ErrorCaTDD):
-    def __init__(self, argument, frame):
+    def __init__(self, argument, frame, validation):
         self.argument = argument
         self.frame = frame
+        self.format = validation.__class__.__name__
     

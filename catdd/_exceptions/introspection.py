@@ -36,3 +36,10 @@ def get_signature(function):
     signature = ''.join(tmp)
     return(signature)
 
+def get_parameter(frame):
+    text = ''.join(frame[4]).strip()
+    text = text.rsplit('(', 1)[1]
+    text = text.rsplit(')', 1)[0]
+    text = text.strip()
+    return(text)
+
