@@ -14,20 +14,19 @@ from catdd import Interface, validate
 
 
 class StringOperationsI(Interface):
-    def reverse(self, text):
+    def reverse(self, text=None):
         validate.String('')
-        validate.String(text)
+        validate.String( text )
         return(validate.String)
 
 
 class StringOperations(StringOperationsI):
-    def reverse(self, text):
-        #return(text[::-1])
-        return(True)
+    def reverse(self, text=None):
+        return(text[::-1])
 
 def main():
     string_operations = StringOperations()
-    print(string_operations.reverse('abc'))
+    print(string_operations.reverse(text=1))
 
 if __name__ == '__main__':
     main()
