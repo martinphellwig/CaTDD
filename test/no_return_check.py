@@ -11,25 +11,16 @@ Basic Test
 """
 
 import unittest
-from catdd import Interface, validate
-from catdd._exceptions import ErrorCaTDD
+from catdd import Interface
 
 class StringOperationsI(Interface):
     def reverse(self, text):
-        validate.String(text)
-        return(validate.String)
-
-class StringOperationsIncompleteI(Interface): pass
+        pass
     
 class StringOperation(StringOperationsI):
     def reverse(self, text):
         return(text[::-1])
 
-class StringOperationsIncompleteInterface(StringOperationsIncompleteI):
-    def reverse(self, text):
-        return(text[::-1])
-    
-class StringOperationsIncompleteImplement(StringOperationsI): pass
     
 class Test(unittest.TestCase):
     def test01_valid(self):
@@ -37,12 +28,6 @@ class Test(unittest.TestCase):
         expect = 'cba'
         self.assertEqual(test.reverse('abc'), expect)
 
-    def test02_not_defined_in_interface(self):
-        self.assertRaises(ErrorCaTDD, StringOperationsIncompleteInterface)
-
-    def test03_not_defined_in_implement(self):
-        self.assertRaises(ErrorCaTDD, StringOperationsIncompleteImplement)
-        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

@@ -9,21 +9,14 @@
 """
 """
 import inspect
-from catdd._exceptions import ValidationError
+import catdd
 
 class BaseValidation(object):
     def __init__(self, *args, **kwargs):
         self.format = None
         self.validate(*args, **kwargs)
         
-    
-    def __call__(self, *args, **kwargs):
-        self.validate(*args, **kwargs)
-        
-    def validate(self, *args, **kwargs):
-        pass
-    
     def error(self, args, kwargs):
         frames = inspect.getouterframes(inspect.currentframe())
         frame = frames[3]
-        raise(ValidationError(args[0], frame, self))
+        raise(catdd.exceptions.ValidationError(args[0], frame, self))
