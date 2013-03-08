@@ -68,7 +68,7 @@ Signature ....... : %s
 Arguments ....... : %s
 Keyword Arguments : %s
 ------------------- 
-Argument Name ... : %s
+Parameter Name .. : %s
 Expected Format . : %s
 Actual Value .... : %s
 Value type ...... : %s
