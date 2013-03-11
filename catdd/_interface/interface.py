@@ -32,7 +32,8 @@ class Interface(object):
         ifd['new_class'] = cls
         ifd['new_args'] = args
         ifd['new_kwargs'] = kwargs
-        ifd['new_object'] = create_new_object(ifd) 
+        ifd['new_object'] = create_new_object(ifd)
+        ifd['return_instance'] = ifd['new_object']
         ifd['return_instance'] = ifd['new_object'](*args, **kwargs)
         ifd['validation_type'] = 'strict'
         return(ifd['return_instance'])

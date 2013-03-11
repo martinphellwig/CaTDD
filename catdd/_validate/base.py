@@ -12,8 +12,8 @@ import inspect
 import catdd
 
 class BaseValidation(object):
+    format = None
     def __init__(self, *args, **kwargs):
-        self.format = None
         self.validate(*args, **kwargs)
         
     def error(self, args, kwargs):

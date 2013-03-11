@@ -52,8 +52,8 @@ class _ExceptHook(object):
             implements.append('- %s' % implement.__name__)
         implements = '\n'.join(implements)
         
-        cp_implement = get_codepoint(self.ifd['user_implements'][0])
-        cp_interface = get_codepoint(self.ifd['user_interfaces'][0])
+        cp_implement = get_codepoint(self.ifd['user_implements'][-1])
+        cp_interface = get_codepoint(self.ifd['user_interfaces'][-1])
         text = _TRACE % (interfaces, cp_interface, 
                          implements, cp_implement, args[1])
         text = _BASE % text

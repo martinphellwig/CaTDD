@@ -40,7 +40,7 @@ def wrap_method(ifd, item):
     for attribute in ATTRIBUTES:
         type_dic[attribute] = getattr(item['implement'], attribute)
     
-    doc_string = item['implement'].__doc__
+    doc_string = item['interface'].__doc__
 
     signature = introspection.get_signature(item['implement'])    
     doc = """>>> %s ... \n%s""" % (signature, doc_string)
