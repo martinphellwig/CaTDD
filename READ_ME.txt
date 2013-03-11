@@ -102,6 +102,11 @@ which also contains an Interface class and validate namespace but it is as the
 name suggest an empty one that does not do any of the above validation and 
 checking.
 
+Does it work with Python 2/3?
+-----------------------------
+It has been tested on Python 2.7 and Python 3.3, older versions might need code
+modification.
+
 
 
 ------------------------------------------------------------------------
