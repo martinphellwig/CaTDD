@@ -32,7 +32,7 @@ This means you should avoid it if any of the following is true:
 - You are unconvinced of the benefits of Test Driven Development.
 
 Which means that you might be interested if you are the opposite:
-- A large/enterprise development group
+- A large/enterprise development group, communication is always an issue
 - You are building a framework from scratch
 - Your customers are your fellow developers, as such the code is the
   most accurate documentation (regardless whether other types are 
@@ -46,7 +46,7 @@ in a certain way and you probably already have included external
 modules in your package to prevent different install version to break 
 your application. So just copy the folder catdd into the folder where 
 the other third party software components are and import from there.
-Please feel very discouraged to put this package in site-packages.
+Please do not put this package in site-packages.
 
 How do I use it?
 ----------------
@@ -90,9 +90,9 @@ value of interface method is another validator. This validator is used with
 the return value of the actual implement method. Finally if no exceptions
 have been thrown, the return value of the implement method is returned.
 
-If anything is not correct you will get an extended stacktrace 
-explaining exactly what interface/implement went wrong and why it went
-wrong and, if appropriate, what input value was.
+If anything is incorrect you will get a modified stacktrace  explaining 
+exactly what interface/implement went wrong and why it went wrong and, if 
+appropriate, what input arguments where used.
 
 What about the overhead?
 ------------------------
@@ -106,4 +106,4 @@ checking.
 
 ------------------------------------------------------------------------
 *) Design By Contract is a US registered trademark (78342277) by 
-   Interactive Software Engineering, Inc. aka Eiffel Software.
+   Interactive Software Engineering, Inc. trading as Eiffel Software.
