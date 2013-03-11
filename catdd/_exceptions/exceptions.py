@@ -10,8 +10,8 @@
 catdd._exceptions.exception
 """
 import sys
-from introspection import get_codepoint, get_signature, get_parameter
-from hook import ErrorCaTDD
+from .introspection import get_codepoint, get_signature, get_parameter
+from .hook import ErrorCaTDD
 
 _NOT_IN_INTERFACE = """
 '%s' method in Implement not specified in Interface

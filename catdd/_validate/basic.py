@@ -8,12 +8,18 @@
 #
 """
 """
-from base import BaseValidation
+import sys
+if sys.hexversion > 0x03000000:
+    _STRING_TYPES = (str, )
+else:
+    _STRING_TYPES = (str, unicode)                                             #@UndefinedVariable
+
+from .base import BaseValidation
 
 class String(BaseValidation):
     def validate(self, *args, **kwargs):
         test = args[0]
-        if not isinstance(test, (str, unicode)):
+        if not isinstance(test, (str, _STRING_TYPES)):
             self.error(args, kwargs)
                     
 class Number(BaseValidation):

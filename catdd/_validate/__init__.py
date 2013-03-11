@@ -8,4 +8,4 @@
 #
 """
 """
-from basic import Array, Boolean, Dictionary, Number, String
+from .basic import Array, Boolean, Dictionary, Number, String

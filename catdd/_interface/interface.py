@@ -9,7 +9,7 @@
 """
 Module containing the Interface base classes.
 """
-from wrappers import create_new_object
+from .wrappers import create_new_object
 # The Interface Dictionary Template, that is copied and filled.
 # It is used throughout the resolving and validation process.
 IFD = {'validation_type':None, # How strict in comparing interface/implement

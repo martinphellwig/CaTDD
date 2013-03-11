@@ -11,7 +11,7 @@
 # Due to the nature of unit-test and coverage, this module will show up as
 # not covered.
 import sys
-from introspection import get_codepoint
+from .introspection import get_codepoint
 
 _BASE = """
 Interface/Implement Error occurred

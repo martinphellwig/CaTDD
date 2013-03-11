@@ -1,3 +1,3 @@
-from _interface import Interface
-import _validate as validate
-import _exceptions as exceptions
+from ._interface import Interface
+from . import _validate as validate
+from . import _exceptions as exceptions

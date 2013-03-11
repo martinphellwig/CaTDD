@@ -9,8 +9,8 @@
 """
 This class contains wrappers for methods and classes
 """
-import introspection
-import validation
+from . import introspection
+from . import validation
 
 ATTRIBUTES = ['__closure__', '__code__', '__hash__', '__repr__', '__str__']
 

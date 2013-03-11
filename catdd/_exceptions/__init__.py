@@ -9,10 +9,10 @@
 """
 Exception Classes
 """
-from hook import ErrorCaTDD
-from exceptions import InterfaceError, InterfaceImplementError, \
-                       InterfaceImplementInheritanceError, \
-                       InterfaceImplementMethodError, MethodInputError, \
-                       MethodReturnValueError, ValidationError
+from .hook import ErrorCaTDD
+from .exceptions import InterfaceError, InterfaceImplementError, \
+                        InterfaceImplementInheritanceError, \
+                        InterfaceImplementMethodError, MethodInputError, \
+                        MethodReturnValueError, ValidationError
 
     
