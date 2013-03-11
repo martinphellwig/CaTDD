@@ -12,16 +12,15 @@ deploy script capable of altering source on the fly, consider changing
 the inheritance from catdd.Interface to object.
 """
 
-class Interface(object): pass
-
-class _Validate(object):
+class _NameSpace(object):
     def __getattr__(self, name):
-        subject_class = type(name, (_Validate,), dict())
+        subject_class = type(name, (_NameSpace,), dict())
         instance = subject_class()
         return(instance)
     
     def __call__(self, *args, **kwargs):
         return(args, kwargs)
 
-
-validate = _Validate()
+class Interface(object): pass
+validate = _NameSpace()
+exceptions = _NameSpace()
