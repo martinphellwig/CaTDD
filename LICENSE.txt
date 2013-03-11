@@ -1,0 +1,32 @@
+# Copyright (c) Martin P. Hellwig <martin.hellwig@gmail.com> 5 Mar 2013     
+# All rights reserved.
+
+Please be aware that although I have published the source code, I do not so
+under any of the open source licenses nor do I put the code in the public 
+domain. 
+
+If you want to use this software, please;
+CONTACT THE AUTHOR FIRST TO OBTAIN A LICENSE BEFORE INCORPORATING OR LEVERAGING
+ANY PART OF THIS SOFTWARE.
+
+
+Typical License Restrictions/Fee's are:
+
+Personal
+--------
+Free if not redistributed, except for dummy.py.
+
+OpenSource under PSF/MIT/BSD/ALv2 or comparable
+-----------------------------------------------
+Free if not redistributed, except for dummy.py.
+
+Academic
+--------
+If the project is OpenSource like the above, the same applies, otherwise
+commercial
+
+Commercial
+----------
+Either a one time fee to acquire redistribution rights or hire the author
+as a contractor for a minimum of a day, which will automatically include 
+redistribution rights to any of the tool sets written at that point of time.   
