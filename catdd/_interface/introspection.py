@@ -9,9 +9,17 @@
 """
 catdd._interface.introspection
 """
+import os, sys
+
+_PATH = os.path.abspath(__file__)
+while not _PATH.endswith('catdd'):
+    _PATH = os.path.split(_PATH)[0]
+_PATH = os.path.split(_PATH)[0]
+sys.path.insert(0, _PATH)
+
 from inspect import isfunction
-import catdd
-from catdd._exceptions.introspection import get_signature, get_codepoint
+import catdd #@UnresolvedImport
+from catdd._exceptions.introspection import get_signature, get_codepoint #@UnresolvedImport @UnusedImport
 
 ERROR_DEFINITION = "Interface Class %s based on Implement Class %s"
 
