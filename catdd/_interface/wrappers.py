@@ -14,6 +14,14 @@ from . import validation
 
 ATTRIBUTES = ['__closure__', '__code__', '__hash__', '__repr__', '__str__']
 
+class IgnoreValidation(object): pass
+
+def ignore_validation(cls):
+    for base in cls.__bases__:
+        if issubclass(base, IgnoreValidation):
+            return(True)
+    return(False)
+
 class MethodWrapper(object):
     """
     Wraps the method of the interface class with optional validation
@@ -30,30 +38,44 @@ class MethodWrapper(object):
     
 def wrap_method(ifd, item):
     # Wrap the method so we have more control over it's actual runtime
-    # execution, preserve as much as possible, i.e. func_* attributes.
-    name = 'Wrapped method %s' % item['implement'].__name__
+    # execution, preserve as much as possible, i.e. func_* attributes. 
+    if ifd['validation_type'] == 'ignore':
+        implement = ifd['user_interfaces'][0]
+        interface = ifd['user_interfaces'][0]
+    else:
+        implement = item['implement']
+        interface = item['interface']
+        
+    name = 'Wrapped method %s' % implement.__name__
     type_dic = dict()
-    for attribute in dir(item['implement']):
+    for attribute in dir(implement):
         if not (attribute.startswith('__') and attribute.endswith('__')):
-            type_dic[attribute] = getattr(item['implement'], attribute)
+            type_dic[attribute] = getattr(implement, attribute)
             
     for attribute in ATTRIBUTES:
-        type_dic[attribute] = getattr(item['implement'], attribute)
+        type_dic[attribute] = getattr(implement, attribute)
     
-    doc_string = item['interface'].__doc__
+    doc_string = interface.__doc__
 
-    signature = introspection.get_signature(item['implement'])    
+    signature = introspection.get_signature(implement)    
     doc = """>>> %s ... \n%s""" % (signature, doc_string)
     type_dic['__doc__'] = doc
-    type_dic['func_archetype'] =  item['implement']
+    type_dic['func_archetype'] =  implement
         
     WrapClass = type(name, (MethodWrapper,), type_dic)
-    value = WrapClass(ifd, item['interface'], item['implement'])
+    value = WrapClass(ifd, interface, implement)
     return(value)
     
-    
 def create_new_object(ifd):
-    introspection.attributes(ifd) # Sets ifd['user_attributes'] 
+    introspection.attributes(ifd) # Sets ifd['user_attributes']
+    
+    if ifd['validation_type'] == 'ignore':
+        type_dic = ifd['user_interfaces'][0].__dict__.copy()
+        type_dic['__getattribute__'] = \
+                        ifd['user_attributes']['__getattribute__']['implement']
+        class_object = type(ifd['new_class'].__name__, (object,), type_dic)
+        return(class_object)
+    
     attributes = ifd['user_attributes']
     validation.interface_and_implement_are_equally_defined(ifd)
     
@@ -67,6 +89,7 @@ def create_new_object(ifd):
         else:
             value = wrap_method(ifd, item)
         type_dic[key] = value
-            
+    
     class_object = type(ifd['new_class'].__name__, (object,), type_dic)
     return(class_object)
+

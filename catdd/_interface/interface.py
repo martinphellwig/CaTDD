@@ -9,7 +9,7 @@
 """
 Module containing the Interface base classes.
 """
-from .wrappers import create_new_object
+from .wrappers import create_new_object, ignore_validation
 # The Interface Dictionary Template, that is copied and filled.
 # It is used throughout the resolving and validation process.
 IFD = {'validation_type':None, # How strict in comparing interface/implement
@@ -28,6 +28,11 @@ IFD = {'validation_type':None, # How strict in comparing interface/implement
 class Interface(object):
     def __new__(cls, *args, **kwargs):
         ifd = IFD.copy()
+        if ignore_validation(cls):
+            ifd['validation_type'] = 'ignore'
+        else:
+            ifd['validation_type'] = 'strict'
+            
         ifd['Interface'] = Interface
         ifd['new_class'] = cls
         ifd['new_args'] = args
@@ -35,6 +40,5 @@ class Interface(object):
         ifd['new_object'] = create_new_object(ifd)
         ifd['return_instance'] = ifd['new_object']
         ifd['return_instance'] = ifd['new_object'](*args, **kwargs)
-        ifd['validation_type'] = 'strict'
         return(ifd['return_instance'])
 
