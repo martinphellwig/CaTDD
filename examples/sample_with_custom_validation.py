@@ -12,7 +12,7 @@ How to do custom validation.
 
 from catdd import Interface, validate
 
-class DataValidation(validate.base.BaseValidation):
+class CustomValidation(validate.base.BaseValidation):  # @UndefinedVariable
     # If format is not given, the class name is used
     format = """
     Compound Dictionary with the following structure:
@@ -21,43 +21,49 @@ class DataValidation(validate.base.BaseValidation):
 
     # The method validate will be called with the argument given, note that
     # this will always be just on parameter.
-    def validate(self, *args, **kwargs):       
+    def validate(self, *args, **kwargs):  
         test = args[0]
         if not isinstance(test, dict):
             # If an error occurs, call self.error like this:
             self.error(args, kwargs)
              
-            
         keys = ['name', 'item']
         for key in keys:
             if key not in test:
                 self.error(args, kwargs)
-                
+        
         if 'values' not in test['item']:
             self.error(args, kwargs)
-            
+             
         if not isinstance(test['name'], (str)): # Python3 this will actually
                                                 # also work for unicode
             self.error(args, kwargs)
-            
-        
+             
         if not isinstance(test['item']['values'], (list, tuple)):
             self.error(args, kwargs)
     
 
 class ExampleI(Interface):
-    def __init__(self, data):
-        DataValidation(data)
+    def who_is(self, data):
+        CustomValidation(data)
+        return(validate.String)
+        
     
     
 class Implements(ExampleI):
-    def __init__(self, data):
-        self.data = data
+    def who_is(self, data):
+        if data['item']['values'][0] == 'son':
+            return_value = 'Who is your daddy?'
+        else:
+            return_value = 'Who is your mummy?'
+        return(return_value)
 
 def main():
     data = {'name':'Myles',
-            'items':{'values':['son']}}
-    Implements(data)
+            'item':{'values':['son']}}
+    implement = Implements()
+    print(implement.who_is(data))
+    
 
 if __name__ == '__main__':
     main()
