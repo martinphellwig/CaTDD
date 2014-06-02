@@ -63,7 +63,7 @@ interface:
 ...         return(validate.String)
 >>>
 
-And to use the above interface (i.e. the implement) you do: 
+And to use the above interface (i.e. to implement it) you do: 
 >>> class Example(ExampleInterface):
 ...     def reverse(self, text): 
 ...         return(text[::-1) 
@@ -104,9 +104,7 @@ checking.
 
 Does it work with Python 2/3?
 -----------------------------
-It has been tested on Python 2.7 and Python 3.3, older versions might need code
-modification.
-
+Only Python 3 is supported.
 
 
 ------------------------------------------------------------------------
