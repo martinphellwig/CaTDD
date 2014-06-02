@@ -12,7 +12,7 @@ How to do custom validation.
 
 from catdd import Interface, validate
 
-class CustomValidation(validate.base.BaseValidation):  # @UndefinedVariable
+class CustomValidation(validate.base.BaseValidation):                           #@UndefinedVariable
     # If format is not given, the class name is used
     format = """
     Compound Dictionary with the following structure:
@@ -20,7 +20,7 @@ class CustomValidation(validate.base.BaseValidation):  # @UndefinedVariable
      'item':{'values':List}}"""
 
     # The method validate will be called with the argument given, note that
-    # this will always be just on parameter.
+    # this will always be just one object, the one that is to be validated.
     def validate(self, *args, **kwargs):  
         test = args[0]
         if not isinstance(test, dict):
@@ -35,8 +35,7 @@ class CustomValidation(validate.base.BaseValidation):  # @UndefinedVariable
         if 'values' not in test['item']:
             self.error(args, kwargs)
              
-        if not isinstance(test['name'], (str)): # Python3 this will actually
-                                                # also work for unicode
+        if not isinstance(test['name'], (str)):
             self.error(args, kwargs)
              
         if not isinstance(test['item']['values'], (list, tuple)):
